@@ -2,25 +2,81 @@
 <html>
     <head>
         <title>API Fun!</title>
+        <link rel="stylesheet" type="text/css" href="./style.css"  />
+        <style>
+
+        </style>
     </head>
     <body>
-        <h1>Music tunes</h1>
+        <h1>Finding Songs Similar To:</h1>
     </body>
     <script>
-        const data = null;
+            var songs_arr = new Array();
+            const data = null;
 
-        const xhr = new XMLHttpRequest();
-        xhr.withCredentials = true;
-        xhr.open("GET", "https://shazam.p.rapidapi.com/search?term=kiss%20the%20rain&locale=en-US&offset=0&limit=5");
-        xhr.setRequestHeader("X-RapidAPI-Key", "aa31840822msh64fe13d74960e0dp18ab59jsnc9362bcd30ab");
-        xhr.setRequestHeader("X-RapidAPI-Host", "shazam.p.rapidapi.com");
+            const xhr = new XMLHttpRequest();
+            console.log("1 - request object created");
+        
+            xhr.withCredentials = false;
 
-        xhr.addEventListener("readystatechange", function () {
-                if (this.readyState === this.DONE) {
-                        console.log(this.responseText);
-                }
-        });
+            xhr.open("GET", "https://shazam.p.rapidapi.com/songs/list-recommendations?key=484129036&locale=en-US");
+            console.log("2 - opened request file")
 
-        xhr.send(data);
+            xhr.setRequestHeader("X-RapidAPI-Key", "aa31840822msh64fe13d74960e0dp18ab59jsnc9362bcd30ab");
+            xhr.setRequestHeader("X-RapidAPI-Host", "shazam.p.rapidapi.com");
+
+            xhr.addEventListener("readystatechange", function () {
+                    console.log("3 - readystatechange event fired.");
+                    if (this.readyState === this.DONE) {
+                            console.log("4 - response received");
+                            var htmlString = "";
+                            // console.log(JSON.parse(xhr.responseText));
+                            songs = JSON.parse(this.responseText);
+                            console.log(songs);
+                            htmlString += "</ul>";
+                            console.log("songs.tracks.length: " + songs.tracks.length);
+                            for (i = 0; i < songs.tracks.length; i++) {
+                                htmlString += "<li>" + songs.tracks[i].title + " : " + songs.tracks[i].subtitle
+                                + "</li>";  
+                                songs_arr.push(songs.tracks[i]);
+                                document.getElementById("songdata").innerHTML = htmlString;
+                            }
+                        
+                    }
+            });
+                
+
+            xhr.send(data);
+
+            // function getSongs(){   
+            //         res = fetch("https://shazam.p.rapidapi.com/songs/list-recommendations?key=484129036&locale=en-US")
+            //         .then(res => res.text())
+            //         .then(data => 
+            //             {
+            //             data = JSON.parse(data)
+            //             for (i = 0; i < data.length; i++) {
+            //                 songs.push(data[i]);
+            //                 console.log(songs[i]);
+            //             } 
+            //             setMessage("hello world")})
+            //             .catch(error => setMessage(error))
     </script>
+    <body>
+        <div id="songdata" style = "font-size:25px; padding-top: 2cm;">
+
+        <h1>Songs like Charcoal Baby - Blood Orange </h1>
+
+        </div>
+        <div id="questions">
+            <p>This API returns a list of song recommendations 
+            based from a particular track. It takes in a string parameter which
+            coressponds to a specific track key. With that track key, it returns
+            20 different song recommendations related to the track. Each
+            recommendation object in the array has its own information such as 
+            the song's title, the subtitle(artist's name), which i utilized.
+            The site I got this from was <a href= "https://rapidapi.com/apidojo/api/shazam"></a> 
+            Rapid API. This API would be helpful on music applications like Apple Music,
+            Pandora, and Spotify. </p>
+        </div>
+    </body>
 </html>
