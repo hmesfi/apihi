@@ -11,7 +11,6 @@
 
         const xhr = new XMLHttpRequest();
         xhr.withCredentials = true;
-        $.support.cors = true;
         xhr.open("GET", "https://shazam.p.rapidapi.com/search?term=kiss%20the%20rain&locale=en-US&offset=0&limit=5");
         xhr.setRequestHeader("X-RapidAPI-Key", "aa31840822msh64fe13d74960e0dp18ab59jsnc9362bcd30ab");
         xhr.setRequestHeader("X-RapidAPI-Host", "shazam.p.rapidapi.com");
